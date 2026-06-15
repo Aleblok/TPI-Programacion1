@@ -1,7 +1,9 @@
 import csv
 
-# FUNCIÓN PARA CARGAR PAÍSES DESDE ARCHIVO CSV
 
+# ---------------------------------------------------------
+# FUNCIÓN PARA CARGAR PAÍSES DESDE ARCHIVO CSV
+# ---------------------------------------------------------
 def cargar_paises(nombre_archivo):
     paises = []
 
@@ -34,8 +36,10 @@ def cargar_paises(nombre_archivo):
         print("Error: el archivo CSV no tiene las columnas esperadas.")
         return []
 
-# FUNCIÓN PARA MOSTRAR EL MENÚ PRINCIPAL
 
+# ---------------------------------------------------------
+# FUNCIÓN PARA MOSTRAR EL MENÚ PRINCIPAL
+# ---------------------------------------------------------
 def mostrar_menu():
     print("\n" + "=" * 50)
     print("        GESTIÓN DE DATOS DE PAÍSES")
@@ -50,8 +54,10 @@ def mostrar_menu():
     print("8. Salir")
     print("=" * 50)
 
-# FUNCIÓN PARA MOSTRAR TODOS LOS PAÍSES CARGADOS
 
+# ---------------------------------------------------------
+# FUNCIÓN PARA MOSTRAR TODOS LOS PAÍSES CARGADOS
+# ---------------------------------------------------------
 def mostrar_paises(paises):
     if len(paises) == 0:
         print("No hay países cargados.")
@@ -63,8 +69,93 @@ def mostrar_paises(paises):
             print("Superficie:", pais["superficie"], "km²")
             print("Continente:", pais["continente"])
 
-# FUNCIÓN PRINCIPAL DEL PROGRAMA
 
+# ---------------------------------------------------------
+# FUNCIÓN PARA VALIDAR TEXTO
+# ---------------------------------------------------------
+def texto_valido(texto):
+    if texto == "":
+        return False
+
+    for caracter in texto:
+        if not (caracter.isalpha() or caracter == " "):
+            return False
+
+    return True
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA LEER UN NÚMERO ENTERO POSITIVO
+# ---------------------------------------------------------
+def leer_entero_positivo(mensaje):
+    while True:
+        try:
+            numero = int(input(mensaje))
+
+            if numero <= 0:
+                raise ValueError
+
+            return numero
+
+        except ValueError:
+            print("Error: debe ingresar un número entero positivo.")
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA VERIFICAR SI UN PAÍS YA EXISTE
+# ---------------------------------------------------------
+def pais_existe(paises, nombre):
+    for pais in paises:
+        if pais["nombre"].strip().lower() == nombre.strip().lower():
+            return True
+
+    return False
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA AGREGAR UN PAÍS
+# ---------------------------------------------------------
+def agregar_pais(paises):
+    print("\n--- AGREGAR PAÍS ---")
+
+    while True:
+        nombre = input("Ingrese el nombre del país: ").strip()
+
+        if not texto_valido(nombre):
+            print("Error: el nombre no puede estar vacío ni contener números o símbolos.")
+
+        elif pais_existe(paises, nombre):
+            print("Error: el país ya existe en el sistema.")
+
+        else:
+            break
+
+    poblacion = leer_entero_positivo("Ingrese la población: ")
+    superficie = leer_entero_positivo("Ingrese la superficie en km²: ")
+
+    while True:
+        continente = input("Ingrese el continente: ").strip()
+
+        if not texto_valido(continente):
+            print("Error: el continente no puede estar vacío ni contener números o símbolos.")
+        else:
+            break
+
+    pais = {
+        "nombre": nombre,
+        "poblacion": poblacion,
+        "superficie": superficie,
+        "continente": continente
+    }
+
+    paises.append(pais)
+
+    print("País agregado correctamente.")
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PRINCIPAL DEL PROGRAMA
+# ---------------------------------------------------------
 def main():
     paises = cargar_paises("paises.csv")
 
@@ -76,7 +167,7 @@ def main():
             mostrar_paises(paises)
 
         elif opcion == "2":
-            print("Función agregar país en desarrollo.")
+            agregar_pais(paises)
 
         elif opcion == "3":
             print("Función actualizar país en desarrollo.")
@@ -100,6 +191,8 @@ def main():
         else:
             print("Opción inválida. Intente nuevamente.")
 
-# EJECUCIÓN DEL PROGRAMA
 
+# ---------------------------------------------------------
+# EJECUCIÓN DEL PROGRAMA
+# ---------------------------------------------------------
 main()
