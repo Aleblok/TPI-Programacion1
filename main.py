@@ -105,6 +105,23 @@ def leer_entero_positivo(mensaje):
 
 
 # ---------------------------------------------------------
+# FUNCIÓN PARA LEER UN NÚMERO ENTERO NO NEGATIVO
+# ---------------------------------------------------------
+def leer_entero_no_negativo(mensaje):
+    while True:
+        try:
+            numero = int(input(mensaje))
+
+            if numero < 0:
+                raise ValueError
+
+            return numero
+
+        except ValueError:
+            print("Error: debe ingresar un número entero igual o mayor a cero.")
+
+
+# ---------------------------------------------------------
 # FUNCIÓN PARA VERIFICAR SI UN PAÍS YA EXISTE
 # ---------------------------------------------------------
 def pais_existe(paises, nombre):
@@ -239,6 +256,7 @@ def actualizar_pais(paises):
         else:
             print("Opción inválida. Intente nuevamente.")
 
+
 # ---------------------------------------------------------
 # FUNCIÓN PARA BUSCAR PAÍSES POR NOMBRE
 # ---------------------------------------------------------
@@ -275,6 +293,147 @@ def buscar_pais_por_nombre(paises):
 
                 print("\nPuede realizar otra búsqueda o presionar Enter para volver al menú.")
 
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA MOSTRAR CONTINENTES DISPONIBLES
+# ---------------------------------------------------------
+def mostrar_continentes_disponibles(paises):
+    continentes = []
+
+    for pais in paises:
+        continente = pais["continente"]
+
+        if continente not in continentes:
+            continentes.append(continente)
+
+    print("\nContinentes disponibles:")
+
+    for continente in continentes:
+        print("-", continente)
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA FILTRAR POR CONTINENTE
+# ---------------------------------------------------------
+def filtrar_por_continente(paises):
+    print("\n--- FILTRAR POR CONTINENTE ---")
+
+    mostrar_continentes_disponibles(paises)
+
+    while True:
+        continente_buscado = input("Ingrese el continente, o presione Enter para volver: ").strip()
+
+        if continente_buscado == "":
+            print("Volviendo al menú de filtros.")
+            return
+
+        if not texto_valido(continente_buscado):
+            print("Error: el continente no puede contener números o símbolos.")
+        else:
+            resultados = []
+
+            for pais in paises:
+                if pais["continente"].strip().lower() == continente_buscado.lower():
+                    resultados.append(pais)
+
+            if len(resultados) == 0:
+                print("No se encontraron países para ese continente. Intente nuevamente.")
+            else:
+                print("\nPaíses encontrados:")
+                mostrar_paises(resultados)
+                return
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA FILTRAR POR RANGO DE POBLACIÓN
+# ---------------------------------------------------------
+def filtrar_por_rango_poblacion(paises):
+    print("\n--- FILTRAR POR RANGO DE POBLACIÓN ---")
+
+    while True:
+        poblacion_minima = leer_entero_no_negativo("Ingrese la población mínima: ")
+        poblacion_maxima = leer_entero_no_negativo("Ingrese la población máxima: ")
+
+        if poblacion_minima > poblacion_maxima:
+            print("Error: la población mínima no puede ser mayor que la población máxima.")
+        else:
+            break
+
+    resultados = []
+
+    for pais in paises:
+        if pais["poblacion"] >= poblacion_minima and pais["poblacion"] <= poblacion_maxima:
+            resultados.append(pais)
+
+    if len(resultados) == 0:
+        print("No se encontraron países dentro de ese rango de población.")
+    else:
+        print("\nPaíses encontrados:")
+        mostrar_paises(resultados)
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA FILTRAR POR RANGO DE SUPERFICIE
+# ---------------------------------------------------------
+def filtrar_por_rango_superficie(paises):
+    print("\n--- FILTRAR POR RANGO DE SUPERFICIE ---")
+
+    while True:
+        superficie_minima = leer_entero_no_negativo("Ingrese la superficie mínima en km²: ")
+        superficie_maxima = leer_entero_no_negativo("Ingrese la superficie máxima en km²: ")
+
+        if superficie_minima > superficie_maxima:
+            print("Error: la superficie mínima no puede ser mayor que la superficie máxima.")
+        else:
+            break
+
+    resultados = []
+
+    for pais in paises:
+        if pais["superficie"] >= superficie_minima and pais["superficie"] <= superficie_maxima:
+            resultados.append(pais)
+
+    if len(resultados) == 0:
+        print("No se encontraron países dentro de ese rango de superficie.")
+    else:
+        print("\nPaíses encontrados:")
+        mostrar_paises(resultados)
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA FILTRAR PAÍSES
+# ---------------------------------------------------------
+def filtrar_paises(paises):
+    if len(paises) == 0:
+        print("No hay países cargados para filtrar.")
+        return
+
+    while True:
+        print("\n--- FILTRAR PAÍSES ---")
+        print("1. Filtrar por continente")
+        print("2. Filtrar por rango de población")
+        print("3. Filtrar por rango de superficie")
+        print("4. Volver al menú principal")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            filtrar_por_continente(paises)
+
+        elif opcion == "2":
+            filtrar_por_rango_poblacion(paises)
+
+        elif opcion == "3":
+            filtrar_por_rango_superficie(paises)
+
+        elif opcion == "4":
+            print("Volviendo al menú principal.")
+            break
+
+        else:
+            print("Opción inválida. Intente nuevamente.")
+
+
 # ---------------------------------------------------------
 # FUNCIÓN PRINCIPAL DEL PROGRAMA
 # ---------------------------------------------------------
@@ -298,7 +457,7 @@ def main():
             buscar_pais_por_nombre(paises)
 
         elif opcion == "5":
-            print("Función filtrar países en desarrollo.")
+            filtrar_paises(paises)
 
         elif opcion == "6":
             print("Función ordenar países en desarrollo.")
