@@ -239,6 +239,41 @@ def actualizar_pais(paises):
         else:
             print("Opción inválida. Intente nuevamente.")
 
+# ---------------------------------------------------------
+# FUNCIÓN PARA BUSCAR PAÍSES POR NOMBRE
+# ---------------------------------------------------------
+def buscar_pais_por_nombre(paises):
+    print("\n--- BUSCAR PAÍS POR NOMBRE ---")
+
+    if len(paises) == 0:
+        print("No hay países cargados para buscar.")
+        return
+
+    while True:
+        busqueda = input("Ingrese el nombre o parte del nombre del país, o presione Enter para volver al menú: ").strip()
+
+        if busqueda == "":
+            print("Volviendo al menú principal.")
+            return
+
+        if not texto_valido(busqueda):
+            print("Error: la búsqueda no puede contener números o símbolos.")
+        else:
+            resultados = []
+
+            for pais in paises:
+                nombre_pais = pais["nombre"].strip().lower()
+
+                if busqueda.lower() in nombre_pais:
+                    resultados.append(pais)
+
+            if len(resultados) == 0:
+                print("No se encontraron países con esa búsqueda. Intente nuevamente.")
+            else:
+                print("\nPaíses encontrados:")
+                mostrar_paises(resultados)
+
+                print("\nPuede realizar otra búsqueda o presionar Enter para volver al menú.")
 
 # ---------------------------------------------------------
 # FUNCIÓN PRINCIPAL DEL PROGRAMA
@@ -260,7 +295,7 @@ def main():
             actualizar_pais(paises)
 
         elif opcion == "4":
-            print("Función buscar país en desarrollo.")
+            buscar_pais_por_nombre(paises)
 
         elif opcion == "5":
             print("Función filtrar países en desarrollo.")
