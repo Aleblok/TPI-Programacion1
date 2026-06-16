@@ -34,6 +34,24 @@ def cargar_paises(nombre_archivo):
         print("Error: el archivo CSV no tiene las columnas esperadas.")
         return []
 
+# FUNCIÓN PARA GUARDAR PAÍSES EN ARCHIVO CSV
+
+def guardar_paises(nombre_archivo, paises):
+    try:
+        with open(nombre_archivo, "w", encoding="utf-8", newline="") as archivo:
+            campos = ["nombre", "poblacion", "superficie", "continente"]
+            escritor = csv.DictWriter(archivo, fieldnames=campos)
+
+            escritor.writeheader()
+            escritor.writerows(paises)
+
+        print("Archivo CSV actualizado correctamente.")
+        return True
+
+    except PermissionError:
+        print("Error: no se tienen permisos para escribir en el archivo CSV.")
+        return False
+
 # FUNCIÓN PARA MOSTRAR EL MENÚ PRINCIPAL
 
 def mostrar_menu():
@@ -173,7 +191,7 @@ def buscar_indice_pais(paises, nombre):
 
 # FUNCIÓN PARA AGREGAR UN PAÍS
 
-def agregar_pais(paises):
+def agregar_pais(paises, nombre_archivo):
     print("\n--- AGREGAR PAÍS ---")
 
     while True:
@@ -202,11 +220,14 @@ def agregar_pais(paises):
 
     paises.append(pais)
 
-    print("País agregado correctamente.")
+    if guardar_paises(nombre_archivo, paises):
+        print("País agregado correctamente.")
+    else:
+        print("El país se agregó en memoria, pero no pudo guardarse en el CSV.")
 
 # FUNCIÓN PARA ACTUALIZAR POBLACIÓN Y/O SUPERFICIE
 
-def actualizar_pais(paises):
+def actualizar_pais(paises, nombre_archivo):
     print("\n--- ACTUALIZAR PAÍS ---")
 
     if len(paises) == 0:
@@ -249,13 +270,23 @@ def actualizar_pais(paises):
         if opcion == "1":
             nueva_poblacion = leer_entero_positivo("Ingrese la nueva población: ")
             paises[indice]["poblacion"] = nueva_poblacion
-            print("Población actualizada correctamente.")
+
+            if guardar_paises(nombre_archivo, paises):
+                print("Población actualizada correctamente.")
+            else:
+                print("La población se actualizó en memoria, pero no pudo guardarse en el CSV.")
+
             break
 
         elif opcion == "2":
             nueva_superficie = leer_entero_positivo("Ingrese la nueva superficie en km²: ")
             paises[indice]["superficie"] = nueva_superficie
-            print("Superficie actualizada correctamente.")
+
+            if guardar_paises(nombre_archivo, paises):
+                print("Superficie actualizada correctamente.")
+            else:
+                print("La superficie se actualizó en memoria, pero no pudo guardarse en el CSV.")
+
             break
 
         elif opcion == "3":
@@ -265,7 +296,11 @@ def actualizar_pais(paises):
             paises[indice]["poblacion"] = nueva_poblacion
             paises[indice]["superficie"] = nueva_superficie
 
-            print("Población y superficie actualizadas correctamente.")
+            if guardar_paises(nombre_archivo, paises):
+                print("Población y superficie actualizadas correctamente.")
+            else:
+                print("Los datos se actualizaron en memoria, pero no pudieron guardarse en el CSV.")
+
             break
 
         elif opcion == "4":
@@ -565,7 +600,8 @@ def mostrar_estadisticas(paises):
 # FUNCIÓN PRINCIPAL DEL PROGRAMA
 
 def main():
-    paises = cargar_paises("paises.csv")
+    nombre_archivo = "paises.csv"
+    paises = cargar_paises(nombre_archivo)
 
     while True:
         mostrar_menu()
@@ -575,10 +611,10 @@ def main():
             mostrar_paises(paises)
 
         elif opcion == "2":
-            agregar_pais(paises)
+            agregar_pais(paises, nombre_archivo)
 
         elif opcion == "3":
-            actualizar_pais(paises)
+            actualizar_pais(paises, nombre_archivo)
 
         elif opcion == "4":
             buscar_pais_por_nombre(paises)
@@ -599,8 +635,6 @@ def main():
         else:
             print("Opción inválida. Intente nuevamente.")
 
-
-# ---------------------------------------------------------
 # EJECUCIÓN DEL PROGRAMA
-# ---------------------------------------------------------
+
 main()
