@@ -1,9 +1,7 @@
 import csv
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA CARGAR PAÍSES DESDE ARCHIVO CSV
-# ---------------------------------------------------------
+
 def cargar_paises(nombre_archivo):
     paises = []
 
@@ -36,10 +34,8 @@ def cargar_paises(nombre_archivo):
         print("Error: el archivo CSV no tiene las columnas esperadas.")
         return []
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA MOSTRAR EL MENÚ PRINCIPAL
-# ---------------------------------------------------------
+
 def mostrar_menu():
     print("\n" + "=" * 50)
     print("        GESTIÓN DE DATOS DE PAÍSES")
@@ -54,10 +50,8 @@ def mostrar_menu():
     print("8. Salir")
     print("=" * 50)
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA MOSTRAR TODOS LOS PAÍSES CARGADOS
-# ---------------------------------------------------------
+
 def mostrar_paises(paises):
     if len(paises) == 0:
         print("No hay países cargados.")
@@ -69,10 +63,8 @@ def mostrar_paises(paises):
             print("Superficie:", pais["superficie"], "km²")
             print("Continente:", pais["continente"])
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA VALIDAR TEXTO
-# ---------------------------------------------------------
+
 def texto_valido(texto):
     texto = texto.strip()
 
@@ -86,10 +78,8 @@ def texto_valido(texto):
     else:
         return False
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA NORMALIZAR TEXTO EN COMPARACIONES
-# ---------------------------------------------------------
+
 def normalizar_texto(texto):
     texto = texto.strip().lower()
 
@@ -102,10 +92,8 @@ def normalizar_texto(texto):
 
     return texto
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA LEER UN NÚMERO ENTERO POSITIVO
-# ---------------------------------------------------------
+
 def leer_entero_positivo(mensaje):
     while True:
         try:
@@ -119,10 +107,8 @@ def leer_entero_positivo(mensaje):
         except ValueError:
             print("Error: debe ingresar un número entero positivo.")
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA LEER UN NÚMERO ENTERO NO NEGATIVO
-# ---------------------------------------------------------
+
 def leer_entero_no_negativo(mensaje):
     while True:
         try:
@@ -136,10 +122,8 @@ def leer_entero_no_negativo(mensaje):
         except ValueError:
             print("Error: debe ingresar un número entero igual o mayor a cero.")
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA SELECCIONAR CONTINENTE
-# ---------------------------------------------------------
+
 def seleccionar_continente(permitir_volver):
     while True:
         print("\nSeleccione el continente:")
@@ -169,10 +153,8 @@ def seleccionar_continente(permitir_volver):
         else:
             print("Opción inválida. Intente nuevamente.")
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA VERIFICAR SI UN PAÍS YA EXISTE
-# ---------------------------------------------------------
+
 def pais_existe(paises, nombre):
     for pais in paises:
         if normalizar_texto(pais["nombre"]) == normalizar_texto(nombre):
@@ -180,10 +162,8 @@ def pais_existe(paises, nombre):
 
     return False
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA BUSCAR EL ÍNDICE DE UN PAÍS
-# ---------------------------------------------------------
+
 def buscar_indice_pais(paises, nombre):
     for i in range(len(paises)):
         if normalizar_texto(paises[i]["nombre"]) == normalizar_texto(nombre):
@@ -191,10 +171,8 @@ def buscar_indice_pais(paises, nombre):
 
     return -1
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA AGREGAR UN PAÍS
-# ---------------------------------------------------------
+
 def agregar_pais(paises):
     print("\n--- AGREGAR PAÍS ---")
 
@@ -226,10 +204,8 @@ def agregar_pais(paises):
 
     print("País agregado correctamente.")
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA ACTUALIZAR POBLACIÓN Y/O SUPERFICIE
-# ---------------------------------------------------------
+
 def actualizar_pais(paises):
     print("\n--- ACTUALIZAR PAÍS ---")
 
@@ -299,10 +275,8 @@ def actualizar_pais(paises):
         else:
             print("Opción inválida. Intente nuevamente.")
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA BUSCAR PAÍSES POR NOMBRE
-# ---------------------------------------------------------
+
 def buscar_pais_por_nombre(paises):
     print("\n--- BUSCAR PAÍS POR NOMBRE ---")
 
@@ -336,10 +310,8 @@ def buscar_pais_por_nombre(paises):
 
                 print("\nPuede realizar otra búsqueda o presionar Enter para volver al menú.")
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA FILTRAR POR CONTINENTE
-# ---------------------------------------------------------
+
 def filtrar_por_continente(paises):
     print("\n--- FILTRAR POR CONTINENTE ---")
 
@@ -361,10 +333,8 @@ def filtrar_por_continente(paises):
         print("\nPaíses encontrados:")
         mostrar_paises(resultados)
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA FILTRAR POR RANGO DE POBLACIÓN
-# ---------------------------------------------------------
+
 def filtrar_por_rango_poblacion(paises):
     print("\n--- FILTRAR POR RANGO DE POBLACIÓN ---")
 
@@ -389,10 +359,8 @@ def filtrar_por_rango_poblacion(paises):
         print("\nPaíses encontrados:")
         mostrar_paises(resultados)
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA FILTRAR POR RANGO DE SUPERFICIE
-# ---------------------------------------------------------
+
 def filtrar_por_rango_superficie(paises):
     print("\n--- FILTRAR POR RANGO DE SUPERFICIE ---")
 
@@ -417,10 +385,8 @@ def filtrar_por_rango_superficie(paises):
         print("\nPaíses encontrados:")
         mostrar_paises(resultados)
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA FILTRAR PAÍSES
-# ---------------------------------------------------------
+
 def filtrar_paises(paises):
     if len(paises) == 0:
         print("No hay países cargados para filtrar.")
@@ -451,10 +417,8 @@ def filtrar_paises(paises):
         else:
             print("Opción inválida. Intente nuevamente.")
 
-
-# ---------------------------------------------------------
 # FUNCIONES AUXILIARES PARA ORDENAMIENTO
-# ---------------------------------------------------------
+
 def obtener_nombre(pais):
     return normalizar_texto(pais["nombre"])
 
@@ -466,10 +430,8 @@ def obtener_poblacion(pais):
 def obtener_superficie(pais):
     return pais["superficie"]
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA ELEGIR SENTIDO DEL ORDENAMIENTO
-# ---------------------------------------------------------
+
 def elegir_orden_descendente():
     while True:
         print("\nSeleccione el tipo de orden:")
@@ -488,10 +450,8 @@ def elegir_orden_descendente():
         else:
             print("Opción inválida. Intente nuevamente.")
 
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA ORDENAR PAÍSES
-# ---------------------------------------------------------
+
 def ordenar_paises(paises):
     if len(paises) == 0:
         print("No hay países cargados para ordenar.")
@@ -549,10 +509,61 @@ def ordenar_paises(paises):
         else:
             print("Opción inválida. Intente nuevamente.")
 
+# FUNCIÓN PARA MOSTRAR ESTADÍSTICAS
 
-# ---------------------------------------------------------
+def mostrar_estadisticas(paises):
+    print("\n--- ESTADÍSTICAS ---")
+
+    if len(paises) == 0:
+        print("No hay países cargados para calcular estadísticas.")
+        return
+
+    pais_mayor_poblacion = paises[0]
+    pais_menor_poblacion = paises[0]
+
+    total_poblacion = 0
+    total_superficie = 0
+
+    cantidad_por_continente = {}
+
+    for pais in paises:
+        if pais["poblacion"] > pais_mayor_poblacion["poblacion"]:
+            pais_mayor_poblacion = pais
+
+        if pais["poblacion"] < pais_menor_poblacion["poblacion"]:
+            pais_menor_poblacion = pais
+
+        total_poblacion = total_poblacion + pais["poblacion"]
+        total_superficie = total_superficie + pais["superficie"]
+
+        continente = pais["continente"]
+
+        if continente in cantidad_por_continente:
+            cantidad_por_continente[continente] = cantidad_por_continente[continente] + 1
+        else:
+            cantidad_por_continente[continente] = 1
+
+    promedio_poblacion = total_poblacion / len(paises)
+    promedio_superficie = total_superficie / len(paises)
+
+    print("\nPaís con mayor población:")
+    print("Nombre:", pais_mayor_poblacion["nombre"])
+    print("Población:", pais_mayor_poblacion["poblacion"])
+
+    print("\nPaís con menor población:")
+    print("Nombre:", pais_menor_poblacion["nombre"])
+    print("Población:", pais_menor_poblacion["poblacion"])
+
+    print("\nPromedio de población:", round(promedio_poblacion, 2))
+    print("Promedio de superficie:", round(promedio_superficie, 2), "km²")
+
+    print("\nCantidad de países por continente:")
+
+    for continente in cantidad_por_continente:
+        print(continente + ":", cantidad_por_continente[continente])
+
 # FUNCIÓN PRINCIPAL DEL PROGRAMA
-# ---------------------------------------------------------
+
 def main():
     paises = cargar_paises("paises.csv")
 
@@ -579,7 +590,7 @@ def main():
             ordenar_paises(paises)
 
         elif opcion == "7":
-            print("Función estadísticas en desarrollo.")
+            mostrar_estadisticas(paises)
 
         elif opcion == "8":
             print("Programa finalizado.")
