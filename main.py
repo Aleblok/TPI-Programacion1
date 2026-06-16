@@ -338,24 +338,6 @@ def buscar_pais_por_nombre(paises):
 
 
 # ---------------------------------------------------------
-# FUNCIÓN PARA MOSTRAR CONTINENTES DISPONIBLES
-# ---------------------------------------------------------
-def mostrar_continentes_disponibles(paises):
-    continentes = []
-
-    for pais in paises:
-        continente = pais["continente"]
-
-        if continente not in continentes:
-            continentes.append(continente)
-
-    print("\nContinentes disponibles:")
-
-    for continente in continentes:
-        print("-", continente)
-
-
-# ---------------------------------------------------------
 # FUNCIÓN PARA FILTRAR POR CONTINENTE
 # ---------------------------------------------------------
 def filtrar_por_continente(paises):
@@ -471,6 +453,104 @@ def filtrar_paises(paises):
 
 
 # ---------------------------------------------------------
+# FUNCIONES AUXILIARES PARA ORDENAMIENTO
+# ---------------------------------------------------------
+def obtener_nombre(pais):
+    return normalizar_texto(pais["nombre"])
+
+
+def obtener_poblacion(pais):
+    return pais["poblacion"]
+
+
+def obtener_superficie(pais):
+    return pais["superficie"]
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA ELEGIR SENTIDO DEL ORDENAMIENTO
+# ---------------------------------------------------------
+def elegir_orden_descendente():
+    while True:
+        print("\nSeleccione el tipo de orden:")
+        print("1. Ascendente")
+        print("2. Descendente")
+        print("3. Volver")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            return False
+        elif opcion == "2":
+            return True
+        elif opcion == "3":
+            return None
+        else:
+            print("Opción inválida. Intente nuevamente.")
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA ORDENAR PAÍSES
+# ---------------------------------------------------------
+def ordenar_paises(paises):
+    if len(paises) == 0:
+        print("No hay países cargados para ordenar.")
+        return
+
+    while True:
+        print("\n--- ORDENAR PAÍSES ---")
+        print("1. Ordenar por nombre")
+        print("2. Ordenar por población")
+        print("3. Ordenar por superficie")
+        print("4. Volver al menú principal")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            descendente = elegir_orden_descendente()
+
+            if descendente is None:
+                print("Volviendo al menú de ordenamiento.")
+            else:
+                paises_ordenados = paises.copy()
+                paises_ordenados.sort(key=obtener_nombre, reverse=descendente)
+
+                print("\nPaíses ordenados por nombre:")
+                mostrar_paises(paises_ordenados)
+
+        elif opcion == "2":
+            descendente = elegir_orden_descendente()
+
+            if descendente is None:
+                print("Volviendo al menú de ordenamiento.")
+            else:
+                paises_ordenados = paises.copy()
+                paises_ordenados.sort(key=obtener_poblacion, reverse=descendente)
+
+                print("\nPaíses ordenados por población:")
+                mostrar_paises(paises_ordenados)
+
+        elif opcion == "3":
+            descendente = elegir_orden_descendente()
+
+            if descendente is None:
+                print("Volviendo al menú de ordenamiento.")
+            else:
+                paises_ordenados = paises.copy()
+                paises_ordenados.sort(key=obtener_superficie, reverse=descendente)
+
+                print("\nPaíses ordenados por superficie:")
+                mostrar_paises(paises_ordenados)
+
+        elif opcion == "4":
+            print("Volviendo al menú principal.")
+            break
+
+        else:
+            print("Opción inválida. Intente nuevamente.")
+
+
+# ---------------------------------------------------------
 # FUNCIÓN PRINCIPAL DEL PROGRAMA
 # ---------------------------------------------------------
 def main():
@@ -496,7 +576,7 @@ def main():
             filtrar_paises(paises)
 
         elif opcion == "6":
-            print("Función ordenar países en desarrollo.")
+            ordenar_paises(paises)
 
         elif opcion == "7":
             print("Función estadísticas en desarrollo.")
