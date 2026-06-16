@@ -74,14 +74,17 @@ def mostrar_paises(paises):
 # FUNCIÓN PARA VALIDAR TEXTO
 # ---------------------------------------------------------
 def texto_valido(texto):
+    texto = texto.strip()
+
     if texto == "":
         return False
 
-    for caracter in texto:
-        if not (caracter.isalpha() or caracter == " "):
-            return False
+    texto_sin_espacios = texto.replace(" ", "")
 
-    return True
+    if texto_sin_espacios.isalpha():
+        return True
+    else:
+        return False
 
 
 # ---------------------------------------------------------
@@ -110,6 +113,17 @@ def pais_existe(paises, nombre):
             return True
 
     return False
+
+
+# ---------------------------------------------------------
+# FUNCIÓN PARA BUSCAR EL ÍNDICE DE UN PAÍS
+# ---------------------------------------------------------
+def buscar_indice_pais(paises, nombre):
+    for i in range(len(paises)):
+        if paises[i]["nombre"].strip().lower() == nombre.strip().lower():
+            return i
+
+    return -1
 
 
 # ---------------------------------------------------------
@@ -154,6 +168,79 @@ def agregar_pais(paises):
 
 
 # ---------------------------------------------------------
+# FUNCIÓN PARA ACTUALIZAR POBLACIÓN Y/O SUPERFICIE
+# ---------------------------------------------------------
+def actualizar_pais(paises):
+    print("\n--- ACTUALIZAR PAÍS ---")
+
+    if len(paises) == 0:
+        print("No hay países cargados para actualizar.")
+        return
+
+    while True:
+        nombre = input("Ingrese el nombre del país a actualizar: ").strip()
+
+        if nombre == "":
+            print("Operación cancelada. Volviendo al menú principal.")
+            return
+
+        if not texto_valido(nombre):
+            print("Error: el nombre no puede contener números o símbolos.")
+
+        else:
+            indice = buscar_indice_pais(paises, nombre)
+
+            if indice == -1:
+                print("No se encontró el país. Intente nuevamente o presione Enter para volver al menú.")
+            else:
+                break
+
+    print("\nDatos actuales:")
+    print("Nombre:", paises[indice]["nombre"])
+    print("Población:", paises[indice]["poblacion"])
+    print("Superficie:", paises[indice]["superficie"], "km²")
+    print("Continente:", paises[indice]["continente"])
+
+    while True:
+        print("\n¿Qué dato desea actualizar?")
+        print("1. Población")
+        print("2. Superficie")
+        print("3. Población y superficie")
+        print("4. Cancelar")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            nueva_poblacion = leer_entero_positivo("Ingrese la nueva población: ")
+            paises[indice]["poblacion"] = nueva_poblacion
+            print("Población actualizada correctamente.")
+            break
+
+        elif opcion == "2":
+            nueva_superficie = leer_entero_positivo("Ingrese la nueva superficie en km²: ")
+            paises[indice]["superficie"] = nueva_superficie
+            print("Superficie actualizada correctamente.")
+            break
+
+        elif opcion == "3":
+            nueva_poblacion = leer_entero_positivo("Ingrese la nueva población: ")
+            nueva_superficie = leer_entero_positivo("Ingrese la nueva superficie en km²: ")
+
+            paises[indice]["poblacion"] = nueva_poblacion
+            paises[indice]["superficie"] = nueva_superficie
+
+            print("Población y superficie actualizadas correctamente.")
+            break
+
+        elif opcion == "4":
+            print("Actualización cancelada.")
+            break
+
+        else:
+            print("Opción inválida. Intente nuevamente.")
+
+
+# ---------------------------------------------------------
 # FUNCIÓN PRINCIPAL DEL PROGRAMA
 # ---------------------------------------------------------
 def main():
@@ -170,7 +257,7 @@ def main():
             agregar_pais(paises)
 
         elif opcion == "3":
-            print("Función actualizar país en desarrollo.")
+            actualizar_pais(paises)
 
         elif opcion == "4":
             print("Función buscar país en desarrollo.")
