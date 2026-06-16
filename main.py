@@ -88,6 +88,22 @@ def texto_valido(texto):
 
 
 # ---------------------------------------------------------
+# FUNCIÓN PARA NORMALIZAR TEXTO EN COMPARACIONES
+# ---------------------------------------------------------
+def normalizar_texto(texto):
+    texto = texto.strip().lower()
+
+    texto = texto.replace("á", "a")
+    texto = texto.replace("é", "e")
+    texto = texto.replace("í", "i")
+    texto = texto.replace("ó", "o")
+    texto = texto.replace("ú", "u")
+    texto = texto.replace("ü", "u")
+
+    return texto
+
+
+# ---------------------------------------------------------
 # FUNCIÓN PARA LEER UN NÚMERO ENTERO POSITIVO
 # ---------------------------------------------------------
 def leer_entero_positivo(mensaje):
@@ -122,11 +138,44 @@ def leer_entero_no_negativo(mensaje):
 
 
 # ---------------------------------------------------------
+# FUNCIÓN PARA SELECCIONAR CONTINENTE
+# ---------------------------------------------------------
+def seleccionar_continente(permitir_volver):
+    while True:
+        print("\nSeleccione el continente:")
+        print("1. América")
+        print("2. Europa")
+        print("3. Asia")
+        print("4. África")
+        print("5. Oceanía")
+
+        if permitir_volver:
+            print("6. Volver")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            return "América"
+        elif opcion == "2":
+            return "Europa"
+        elif opcion == "3":
+            return "Asia"
+        elif opcion == "4":
+            return "África"
+        elif opcion == "5":
+            return "Oceanía"
+        elif opcion == "6" and permitir_volver:
+            return ""
+        else:
+            print("Opción inválida. Intente nuevamente.")
+
+
+# ---------------------------------------------------------
 # FUNCIÓN PARA VERIFICAR SI UN PAÍS YA EXISTE
 # ---------------------------------------------------------
 def pais_existe(paises, nombre):
     for pais in paises:
-        if pais["nombre"].strip().lower() == nombre.strip().lower():
+        if normalizar_texto(pais["nombre"]) == normalizar_texto(nombre):
             return True
 
     return False
@@ -137,7 +186,7 @@ def pais_existe(paises, nombre):
 # ---------------------------------------------------------
 def buscar_indice_pais(paises, nombre):
     for i in range(len(paises)):
-        if paises[i]["nombre"].strip().lower() == nombre.strip().lower():
+        if normalizar_texto(paises[i]["nombre"]) == normalizar_texto(nombre):
             return i
 
     return -1
@@ -164,13 +213,7 @@ def agregar_pais(paises):
     poblacion = leer_entero_positivo("Ingrese la población: ")
     superficie = leer_entero_positivo("Ingrese la superficie en km²: ")
 
-    while True:
-        continente = input("Ingrese el continente: ").strip()
-
-        if not texto_valido(continente):
-            print("Error: el continente no puede estar vacío ni contener números o símbolos.")
-        else:
-            break
+    continente = seleccionar_continente(False)
 
     pais = {
         "nombre": nombre,
@@ -280,9 +323,9 @@ def buscar_pais_por_nombre(paises):
             resultados = []
 
             for pais in paises:
-                nombre_pais = pais["nombre"].strip().lower()
+                nombre_pais = normalizar_texto(pais["nombre"])
 
-                if busqueda.lower() in nombre_pais:
+                if normalizar_texto(busqueda) in nombre_pais:
                     resultados.append(pais)
 
             if len(resultados) == 0:
@@ -318,30 +361,23 @@ def mostrar_continentes_disponibles(paises):
 def filtrar_por_continente(paises):
     print("\n--- FILTRAR POR CONTINENTE ---")
 
-    mostrar_continentes_disponibles(paises)
+    continente_buscado = seleccionar_continente(True)
 
-    while True:
-        continente_buscado = input("Ingrese el continente, o presione Enter para volver: ").strip()
+    if continente_buscado == "":
+        print("Volviendo al menú de filtros.")
+        return
 
-        if continente_buscado == "":
-            print("Volviendo al menú de filtros.")
-            return
+    resultados = []
 
-        if not texto_valido(continente_buscado):
-            print("Error: el continente no puede contener números o símbolos.")
-        else:
-            resultados = []
+    for pais in paises:
+        if normalizar_texto(pais["continente"]) == normalizar_texto(continente_buscado):
+            resultados.append(pais)
 
-            for pais in paises:
-                if pais["continente"].strip().lower() == continente_buscado.lower():
-                    resultados.append(pais)
-
-            if len(resultados) == 0:
-                print("No se encontraron países para ese continente. Intente nuevamente.")
-            else:
-                print("\nPaíses encontrados:")
-                mostrar_paises(resultados)
-                return
+    if len(resultados) == 0:
+        print("No se encontraron países para ese continente.")
+    else:
+        print("\nPaíses encontrados:")
+        mostrar_paises(resultados)
 
 
 # ---------------------------------------------------------
