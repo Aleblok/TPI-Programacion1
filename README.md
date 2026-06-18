@@ -260,8 +260,9 @@ En este proyecto se aplicaron los siguientes contenidos de Programación 1:
 
 ## Enlaces
 
-* Video demostrativo: a completar
-* Informe PDF: a completar
+* Video demostrativo: https://youtu.be/N2BuAntE_Oc 
+* Informe PDF: [TPI-Borges-Licciardi-Alessandra.pdf](https://github.com/user-attachments/files/29073659/TPI-Borges-Licciardi-Alessandra.pdf)
+
 
 ## Estado del proyecto
 
